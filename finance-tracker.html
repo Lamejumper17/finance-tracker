@@ -20,38 +20,41 @@
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
 
-  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; gap: 0; }
-  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); padding: 1rem 0; margin-right: 2.5rem; letter-spacing: -0.02em; }
-  .nav-tab { background: none; border: none; padding: 1.1rem 1.2rem; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; font-weight: 500; }
-  .nav-tab:hover { color: var(--text); }
-  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
-  .sync-status { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--text); padding: 1rem 0; margin-right: auto; letter-spacing: -0.02em; }
+  .sync-status { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 5px; margin-right: 1rem; }
   .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
   .sync-dot.synced { background: var(--good); }
   .sync-dot.syncing { background: var(--warn); animation: pulse 1s infinite; }
   .sync-dot.error { background: var(--danger); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  main { padding: 2.5rem 2rem; max-width: 1100px; margin: 0 auto; }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
+  /* LOGIN */
   #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
   .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 3rem 2.5rem; text-align: center; max-width: 420px; width: 100%; margin: 1rem; }
   .login-title { font-family: 'DM Serif Display', serif; font-size: 2rem; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
   .login-sub { font-size: 14px; color: var(--text2); margin-bottom: 2rem; line-height: 1.6; }
-  .google-btn { display: inline-flex; align-items: center; gap: 10px; padding: 0.75rem 1.5rem; background: var(--surface); border: 1px solid var(--border-med); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; color: var(--text); }
-  .google-btn:hover { background: var(--surface2); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .google-btn { display: inline-flex; align-items: center; gap: 10px; padding: 0.75rem 1.5rem; background: var(--surface); border: 1px solid var(--border-med); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s; color: var(--text); }
+  .google-btn:hover { background: var(--surface2); }
   .login-note { font-size: 12px; color: var(--text3); margin-top: 1.5rem; line-height: 1.6; }
 
-  .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
-  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); }
+  /* LAYOUT */
+  main { padding: 2.5rem 2rem; max-width: 1100px; margin: 0 auto; }
 
+  /* SECTION DIVIDER */
+  .section-divider { display: flex; align-items: center; gap: 1rem; margin: 3rem 0 2rem; }
+  .section-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .section-divider-label { font-family: 'DM Serif Display', serif; font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); white-space: nowrap; }
+
+  /* CARDS */
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.25rem; }
   .card-title { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 1rem; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .card-header .card-title { margin-bottom: 0; }
 
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
   .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; box-shadow: var(--shadow); }
   .stat-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.4rem; }
   .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.9rem; letter-spacing: -0.02em; color: var(--text); line-height: 1; }
@@ -59,6 +62,7 @@
   .stat-good .stat-value { color: var(--good); }
   .stat-danger .stat-value { color: var(--danger); }
 
+  /* BUTTONS */
   .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-med); background: var(--surface); color: var(--text); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.1s; }
   .btn:hover { background: var(--surface2); }
   .btn:active { transform: scale(0.98); }
@@ -66,42 +70,58 @@
   .btn-primary:hover { background: #234830; border-color: #234830; }
   .btn-danger { background: none; border-color: transparent; color: var(--danger); padding: 0.3rem 0.6rem; font-size: 12px; }
   .btn-danger:hover { background: #fdecea; }
+  .btn-sm { padding: 0.3rem 0.75rem; font-size: 12px; }
 
+  /* FORM */
   .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
   .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
   label { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); }
-  input[type="text"], input[type="number"] { padding: 0.55rem 0.75rem; border: 1px solid var(--border-med); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
+  input[type="text"], input[type="number"], input[type="month"] { padding: 0.55rem 0.75rem; border: 1px solid var(--border-med); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
   input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,90,61,0.1); }
 
+  /* DEBT TABLE */
   .debt-table { width: 100%; border-collapse: collapse; font-size: 14px; }
   .debt-table th { text-align: left; padding: 0.6rem 1rem; font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); }
   .debt-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
   .debt-table tr:last-child td { border-bottom: none; }
   .debt-table tr:hover td { background: var(--surface2); }
 
-  .progress-track { background: var(--surface2); border-radius: 99px; height: 6px; overflow: hidden; width: 120px; display: inline-block; vertical-align: middle; }
+  /* PROGRESS */
+  .progress-track { background: var(--surface2); border-radius: 99px; height: 6px; overflow: hidden; width: 100px; display: inline-block; vertical-align: middle; }
   .progress-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.4s ease; }
   .progress-fill.high { background: var(--danger); }
   .progress-fill.med { background: var(--warn); }
 
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
   .badge-warn { background: var(--warn-light); color: var(--warn); }
   .badge-danger { background: #fdecea; color: var(--danger); }
   .badge-good { background: var(--good-light); color: var(--good); }
 
+  /* CHART */
   .chart-wrap { position: relative; width: 100%; height: 240px; }
 
-  .dropzone { border: 2px dashed var(--border-med); border-radius: var(--radius); padding: 2.5rem; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: var(--surface); margin-bottom: 1.25rem; }
-  .dropzone:hover, .dropzone.drag-over { border-color: var(--accent); background: var(--accent-light); }
-  .dropzone-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text3); display: block; }
-  .dropzone p { color: var(--text2); font-size: 14px; }
-  .dropzone p.hint { font-size: 12px; color: var(--text3); margin-top: 0.25rem; }
+  /* PAYMENT LOG */
+  .payment-entry { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .payment-entry:last-child { border-bottom: none; }
+  .payment-month { font-size: 13px; font-weight: 500; min-width: 90px; }
+  .payment-amount { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--good); }
+  .payment-note { font-size: 12px; color: var(--text3); flex: 1; }
 
-  .month-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  /* DROP ZONE */
+  .dropzone { border: 2px dashed var(--border-med); border-radius: var(--radius); padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: var(--surface); margin-bottom: 1.25rem; }
+  .dropzone:hover, .dropzone.drag-over { border-color: var(--accent); background: var(--accent-light); }
+  .dropzone-icon { font-size: 1.75rem; margin-bottom: 0.4rem; display: block; }
+  .dropzone p { color: var(--text2); font-size: 14px; }
+  .dropzone p.hint { font-size: 12px; color: var(--text3); margin-top: 0.2rem; }
+
+  /* MONTH TABS */
+  .month-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .month-btn { padding: 0.4rem 0.85rem; border: 1px solid var(--border-med); border-radius: 99px; background: var(--surface); font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; color: var(--text2); transition: all 0.15s; font-weight: 500; }
   .month-btn:hover { background: var(--surface2); color: var(--text); }
   .month-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
 
+  /* CATEGORIES */
   .cat-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 14px; }
   .cat-row:last-child { border-bottom: none; }
   .cat-name { flex: 1; font-weight: 500; }
@@ -109,24 +129,28 @@
   .cat-bar-wrap { flex: 2; background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; }
   .cat-bar { height: 100%; border-radius: 99px; }
 
-  .compare-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  /* COMPARE */
+  .compare-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem; }
   .compare-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
-  .compare-month { font-size: 12px; color: var(--text3); margin-bottom: 0.25rem; }
+  .compare-month-label { font-size: 12px; color: var(--text3); margin-bottom: 0.25rem; }
   .compare-total { font-family: 'DM Serif Display', serif; font-size: 1.4rem; letter-spacing: -0.02em; }
   .compare-delta { font-size: 12px; margin-top: 0.25rem; }
   .delta-up { color: var(--danger); }
   .delta-down { color: var(--good); }
 
-  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); }
-  .empty-icon { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+  /* EMPTY */
+  .empty { text-align: center; padding: 2.5rem 1rem; color: var(--text3); }
+  .empty-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
   .empty p { font-size: 14px; }
 
+  /* MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; display: none; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.18); padding: 2rem; width: 100%; max-width: 520px; margin: 1rem; }
+  .modal { background: var(--surface); border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.18); padding: 2rem; width: 100%; max-width: 520px; margin: 1rem; max-height: 90vh; overflow-y: auto; }
   .modal-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
   .modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
 
+  /* TIMELINE */
   .timeline { display: flex; flex-direction: column; position: relative; }
   .timeline::before { content: ''; position: absolute; left: 15px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
   .timeline-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.6rem 0; position: relative; }
@@ -135,24 +159,27 @@
   .timeline-name { font-weight: 500; font-size: 14px; }
   .timeline-date { font-size: 12px; color: var(--text3); }
 
-  @media (max-width: 640px) {
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+
+  @media (max-width: 680px) {
     nav { padding: 0 1rem; }
     main { padding: 1.5rem 1rem; }
-    .nav-brand { margin-right: 1rem; font-size: 1.1rem; }
+    .two-col { grid-template-columns: 1fr; }
     .stat-grid { grid-template-columns: 1fr 1fr; }
-    .two-col { grid-template-columns: 1fr !important; }
     .debt-table th:nth-child(4), .debt-table td:nth-child(4),
     .debt-table th:nth-child(5), .debt-table td:nth-child(5) { display: none; }
-    .nav-right .sync-status span { display: none; }
+    .sync-status span { display: none; }
   }
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-title">Finances</div>
-    <p class="login-sub">Sign in with Google to sync your debt and spending data across all your devices.</p>
+    <p class="login-sub">Sign in with Google to sync your data across all your devices.</p>
     <button class="google-btn" onclick="signIn()">
       <svg width="20" height="20" viewBox="0 0 24 24">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -166,122 +193,153 @@
   </div>
 </div>
 
+<!-- APP -->
 <div id="app" style="display:none">
   <nav>
     <div class="nav-brand">Finances</div>
-    <button class="nav-tab active" onclick="switchTab('debt', this)">Debt Payoff</button>
-    <button class="nav-tab" onclick="switchTab('spending', this)">Spending</button>
-    <div class="nav-right">
-      <div class="sync-status">
-        <div class="sync-dot" id="sync-dot"></div>
-        <span id="sync-label">Ready</span>
-      </div>
-      <button class="btn" style="font-size:12px; padding:0.35rem 0.75rem;" onclick="signOut()">Sign out</button>
+    <div class="sync-status">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-label">Ready</span>
     </div>
+    <button class="btn btn-sm" onclick="signOut()">Sign out</button>
   </nav>
 
   <main>
-    <div class="tab-panel active" id="tab-debt">
-      <div class="section-header">
-        <h1 class="section-title">Debt Payoff</h1>
-        <button class="btn btn-primary" onclick="openAddDebt()">+ Add Debt</button>
+
+    <!-- ══════════════ DEBT SECTION ══════════════ -->
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+      <h1 style="font-family:'DM Serif Display',serif; font-size:1.6rem; letter-spacing:-0.02em;">Debt Payoff</h1>
+      <button class="btn btn-primary" onclick="openAddDebt()">+ Add Debt</button>
+    </div>
+
+    <div class="stat-grid" id="debt-stats">
+      <div class="stat-card stat-danger">
+        <div class="stat-label">Total Owed</div>
+        <div class="stat-value" id="stat-total">$0</div>
       </div>
-      <div class="stat-grid">
-        <div class="stat-card stat-danger">
-          <div class="stat-label">Total Owed</div>
-          <div class="stat-value" id="stat-total">$0</div>
+      <div class="stat-card">
+        <div class="stat-label">Debts Tracked</div>
+        <div class="stat-value" id="stat-count">0</div>
+      </div>
+      <div class="stat-card stat-good">
+        <div class="stat-label">Avg. Interest Rate</div>
+        <div class="stat-value" id="stat-avgrate">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Est. Full Payoff</div>
+        <div class="stat-value" id="stat-payoff" style="font-size:1.4rem">--</div>
+      </div>
+      <div class="stat-card stat-good">
+        <div class="stat-label">Total Paid (All Time)</div>
+        <div class="stat-value" id="stat-paid">$0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Your Debts — Avalanche Order (Highest Rate First)</div>
+      <div id="debt-list-empty" class="empty">
+        <span class="empty-icon">💳</span>
+        <p>No debts added yet. Hit "Add Debt" to get started.</p>
+      </div>
+      <div id="debt-list" style="display:none">
+        <table class="debt-table">
+          <thead><tr>
+            <th>Name</th><th>Balance</th><th>Rate</th>
+            <th>Min. Payment</th><th>Progress</th><th>Est. Payoff</th><th></th>
+          </tr></thead>
+          <tbody id="debt-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="payoff-section" style="display:none">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Payoff Timeline</div>
+          <div class="timeline" id="payoff-timeline"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Debts Tracked</div>
-          <div class="stat-value" id="stat-count">0</div>
+        <div class="card">
+          <div class="card-title">Balance Over Time</div>
+          <div class="chart-wrap"><canvas id="debt-chart"></canvas></div>
+          <div style="margin-top:0.75rem;">
+            <label style="font-size:13px;color:var(--text2);font-weight:400;text-transform:none;letter-spacing:0;">
+              Extra monthly payment: <span style="font-weight:600;color:var(--text);" id="extra-label">$0</span>
+            </label>
+            <input type="range" id="extra-payment" min="0" max="1000" step="25" value="0" style="width:100%;margin-top:0.5rem;" oninput="updateExtraPayment(this.value)">
+          </div>
         </div>
-        <div class="stat-card stat-good">
-          <div class="stat-label">Avg. Interest Rate</div>
-          <div class="stat-value" id="stat-avgrate">0%</div>
+      </div>
+
+      <!-- PAYMENT LOG -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Monthly Payment Log</div>
+          <button class="btn btn-sm" onclick="openLogPayment()">+ Log Payment</button>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Est. Full Payoff</div>
-          <div class="stat-value" id="stat-payoff" style="font-size:1.4rem">--</div>
+        <div id="payment-log-empty" class="empty" style="padding:1.5rem;">
+          <span class="empty-icon">📝</span>
+          <p>No payments logged yet.</p>
+        </div>
+        <div id="payment-log-content" style="display:none">
+          <div class="two-col" style="margin-bottom:1rem;">
+            <div class="chart-wrap" style="height:180px;"><canvas id="payment-chart"></canvas></div>
+            <div id="payment-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ SPENDING SECTION ══════════════ -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Spending</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+      <div class="month-tabs" id="month-selector"></div>
+    </div>
+
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('csv-input').click()"
+         ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <span class="dropzone-icon">📂</span>
+      <p id="dropzone-label"><strong>Drop a bank CSV here</strong> or click to browse</p>
+      <p class="hint">Works with Chase, Bank of America, Capital One, Wells Fargo, and most major banks.</p>
+      <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleFile(this.files[0])">
+    </div>
+
+    <div id="spending-content" style="display:none">
+      <div class="stat-grid" id="spending-stats"></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Spending by Category</div>
+          <div id="category-breakdown"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Category Distribution</div>
+          <div class="chart-wrap"><canvas id="spending-pie"></canvas></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-title">Your Debts — Avalanche Order (Highest Rate First)</div>
-        <div id="debt-list-empty" class="empty">
-          <span class="empty-icon">💳</span>
-          <p>No debts added yet. Hit "Add Debt" to get started.</p>
-        </div>
-        <div id="debt-list" style="display:none">
-          <table class="debt-table">
-            <thead><tr>
-              <th>Name</th><th>Balance</th><th>Rate</th>
-              <th>Min. Payment</th><th>Progress</th><th>Est. Payoff</th><th></th>
-            </tr></thead>
-            <tbody id="debt-tbody"></tbody>
-          </table>
-        </div>
+        <div class="card-title">Month-over-Month</div>
+        <div class="chart-wrap" style="height:200px;"><canvas id="mom-chart"></canvas></div>
+        <div class="compare-grid" id="month-compare" style="margin-top:1rem;"></div>
       </div>
-      <div id="payoff-section" style="display:none">
-        <div class="two-col" style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
-          <div class="card">
-            <div class="card-title">Payoff Timeline</div>
-            <div class="timeline" id="payoff-timeline"></div>
-          </div>
-          <div class="card">
-            <div class="card-title">Balance Over Time</div>
-            <div class="chart-wrap"><canvas id="debt-chart"></canvas></div>
-            <div style="margin-top:0.75rem;">
-              <label style="font-size:13px; color:var(--text2); font-weight:400; text-transform:none; letter-spacing:0;">
-                Extra monthly payment: <span style="font-weight:600; color:var(--text);" id="extra-label">$0</span>
-              </label>
-              <input type="range" id="extra-payment" min="0" max="1000" step="25" value="0" style="width:100%; margin-top:0.5rem;" oninput="updateExtraPayment(this.value)">
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <div class="card-title">Transactions</div>
+        <div id="transactions-list"></div>
       </div>
     </div>
 
-    <div class="tab-panel" id="tab-spending">
-      <div class="section-header">
-        <h1 class="section-title">Spending</h1>
-        <div id="month-selector" class="month-tabs"></div>
-      </div>
-      <div class="dropzone" id="dropzone" onclick="document.getElementById('csv-input').click()"
-           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-        <span class="dropzone-icon">📂</span>
-        <p id="dropzone-label"><strong>Drop a bank CSV here</strong> or click to browse</p>
-        <p class="hint">Works with Chase, Bank of America, Capital One, Wells Fargo, and most major banks.</p>
-        <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleFile(this.files[0])">
-      </div>
-      <div id="spending-content" style="display:none">
-        <div class="stat-grid" id="spending-stats"></div>
-        <div class="two-col" style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
-          <div class="card">
-            <div class="card-title">Spending by Category</div>
-            <div id="category-breakdown"></div>
-          </div>
-          <div class="card">
-            <div class="card-title">Category Distribution</div>
-            <div class="chart-wrap"><canvas id="spending-pie"></canvas></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">Month-over-Month</div>
-          <div class="chart-wrap" style="height:200px;"><canvas id="mom-chart"></canvas></div>
-          <div class="compare-grid" id="month-compare" style="margin-top:1rem;"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Transactions</div>
-          <div id="transactions-list"></div>
-        </div>
-      </div>
-      <div id="spending-empty" class="empty">
-        <span class="empty-icon">📊</span>
-        <p>Upload a CSV from your bank to see your spending breakdown.</p>
-      </div>
+    <div id="spending-empty" class="empty">
+      <span class="empty-icon">📊</span>
+      <p>Upload a CSV from your bank to see your spending breakdown.</p>
     </div>
+
   </main>
 </div>
 
+<!-- DEBT MODAL -->
 <div class="modal-overlay" id="debt-modal">
   <div class="modal">
     <div class="modal-title" id="modal-title">Add a Debt</div>
@@ -313,8 +371,34 @@
     </div>
     <input type="hidden" id="edit-index" value="">
     <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn" onclick="closeModal('debt-modal')">Cancel</button>
       <button class="btn btn-primary" onclick="saveDebt()">Save Debt</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="payment-modal">
+  <div class="modal">
+    <div class="modal-title">Log a Payment</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:1.25rem;">Record the total amount you paid toward all your debts this month.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Month</label>
+        <input type="month" id="p-month">
+      </div>
+      <div class="form-group">
+        <label>Total Paid ($)</label>
+        <input type="number" id="p-amount" placeholder="500" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Note (optional)</label>
+      <input type="text" id="p-note" placeholder="e.g. Paid extra on Chase this month">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('payment-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePayment()">Log Payment</button>
     </div>
   </div>
 </div>
@@ -326,11 +410,13 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googlea
 let accessToken = null;
 let spreadsheetId = localStorage.getItem('ft_sheet_id') || null;
 let debts = [];
+let payments = []; // [{month, amount, note}]
 let spendingData = {};
 let selectedMonth = null;
 let debtChart = null;
 let pieChart = null;
 let momChart = null;
+let paymentChart = null;
 let extraPayment = 0;
 
 const CAT_COLORS = {
@@ -349,158 +435,149 @@ const CATEGORY_RULES = [
 ];
 
 function categorize(desc) {
-  const d = (desc||'').toLowerCase();
-  for (const r of CATEGORY_RULES) if (r.keywords.some(k=>d.includes(k))) return r.cat;
+  const d=(desc||'').toLowerCase();
+  for(const r of CATEGORY_RULES) if(r.keywords.some(k=>d.includes(k))) return r.cat;
   return 'Other';
 }
-function fmt(n) { return '$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtShort(n) { return n>=1000?'$'+(n/1000).toFixed(1)+'k':'$'+Math.round(n); }
+function fmt(n){return '$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtShort(n){return n>=1000?'$'+(n/1000).toFixed(1)+'k':'$'+Math.round(n);}
+function monthLabel(mk){const[y,m]=mk.split('-');return new Date(+y,+m-1,1).toLocaleDateString('en-US',{month:'short',year:'numeric'});}
 
-function setSyncStatus(state, label) {
-  document.getElementById('sync-dot').className = 'sync-dot '+state;
-  document.getElementById('sync-label').textContent = label;
+function setSyncStatus(state,label){
+  document.getElementById('sync-dot').className='sync-dot '+state;
+  document.getElementById('sync-label').textContent=label;
 }
 
-// AUTH
-function signIn() {
-  const base = window.location.href.split('?')[0].split('#')[0];
-  const params = new URLSearchParams({
-    client_id: CLIENT_ID,
-    redirect_uri: base,
-    response_type: 'token',
-    scope: SCOPES,
-    prompt: 'select_account'
-  });
-  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?'+params;
+// ── AUTH ──
+function signIn(){
+  const base=window.location.href.split('?')[0].split('#')[0];
+  window.location.href='https://accounts.google.com/o/oauth2/v2/auth?'+new URLSearchParams({client_id:CLIENT_ID,redirect_uri:base,response_type:'token',scope:SCOPES,prompt:'select_account'});
 }
-
-function signOut() {
-  accessToken = null;
-  localStorage.removeItem('ft_token');
-  localStorage.removeItem('ft_token_exp');
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
+function signOut(){
+  accessToken=null;
+  localStorage.removeItem('ft_token');localStorage.removeItem('ft_token_exp');
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
 }
-
-function handleAuthCallback() {
-  const params = new URLSearchParams(window.location.hash.substring(1));
-  const token = params.get('access_token');
-  const exp = params.get('expires_in');
-  if (token) {
-    accessToken = token;
-    localStorage.setItem('ft_token', token);
-    localStorage.setItem('ft_token_exp', Date.now() + parseInt(exp)*1000);
+function handleAuthCallback(){
+  const params=new URLSearchParams(window.location.hash.substring(1));
+  const token=params.get('access_token');
+  const exp=params.get('expires_in');
+  if(token){
+    accessToken=token;
+    localStorage.setItem('ft_token',token);
+    localStorage.setItem('ft_token_exp',Date.now()+parseInt(exp)*1000);
     history.replaceState(null,'',window.location.pathname);
     return true;
   }
   return false;
 }
-
-function loadStoredToken() {
-  const token = localStorage.getItem('ft_token');
-  const exp = localStorage.getItem('ft_token_exp');
-  if (token && exp && Date.now() < parseInt(exp)) { accessToken = token; return true; }
+function loadStoredToken(){
+  const token=localStorage.getItem('ft_token');
+  const exp=localStorage.getItem('ft_token_exp');
+  if(token&&exp&&Date.now()<parseInt(exp)){accessToken=token;return true;}
   return false;
 }
 
-// SHEETS API
-async function sheetsReq(method, endpoint, body) {
-  const res = await fetch('https://sheets.googleapis.com/v4/spreadsheets'+endpoint, {
-    method, headers: {'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
-    body: body ? JSON.stringify(body) : undefined
+// ── SHEETS ──
+async function sheetsReq(method,endpoint,body){
+  const res=await fetch('https://sheets.googleapis.com/v4/spreadsheets'+endpoint,{
+    method,headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+    body:body?JSON.stringify(body):undefined
   });
-  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message||'Sheets error'); }
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'Sheets error');}
+  return res.json();
+}
+async function driveReq(endpoint){
+  const res=await fetch('https://www.googleapis.com/drive/v3'+endpoint,{headers:{'Authorization':'Bearer '+accessToken}});
+  if(!res.ok)throw new Error('Drive error');
   return res.json();
 }
 
-async function driveReq(endpoint) {
-  const res = await fetch('https://www.googleapis.com/drive/v3'+endpoint, {
-    headers: {'Authorization':'Bearer '+accessToken}
-  });
-  if (!res.ok) throw new Error('Drive error');
-  return res.json();
-}
-
-async function findOrCreateSheet() {
-  if (spreadsheetId) {
-    try { await sheetsReq('GET', '/'+spreadsheetId+'?fields=spreadsheetId'); return; }
-    catch { spreadsheetId = null; localStorage.removeItem('ft_sheet_id'); }
+async function findOrCreateSheet(){
+  if(spreadsheetId){
+    try{await sheetsReq('GET','/'+spreadsheetId+'?fields=spreadsheetId');return;}
+    catch{spreadsheetId=null;localStorage.removeItem('ft_sheet_id');}
   }
-  const search = await driveReq("/files?q=name='Finance Tracker Data' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false&fields=files(id)");
-  if (search.files?.length) {
-    spreadsheetId = search.files[0].id;
-    localStorage.setItem('ft_sheet_id', spreadsheetId);
-    return;
-  }
-  const created = await sheetsReq('POST','',{
+  const search=await driveReq("/files?q=name='Finance Tracker Data' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false&fields=files(id)");
+  if(search.files?.length){spreadsheetId=search.files[0].id;localStorage.setItem('ft_sheet_id',spreadsheetId);return;}
+  const created=await sheetsReq('POST','',{
     properties:{title:'Finance Tracker Data'},
-    sheets:[{properties:{title:'Debts'}},{properties:{title:'Spending'}}]
+    sheets:[{properties:{title:'Debts'}},{properties:{title:'Spending'}},{properties:{title:'Payments'}}]
   });
-  spreadsheetId = created.spreadsheetId;
-  localStorage.setItem('ft_sheet_id', spreadsheetId);
+  spreadsheetId=created.spreadsheetId;
+  localStorage.setItem('ft_sheet_id',spreadsheetId);
   await sheetsReq('PUT','/'+spreadsheetId+'/values/Debts!A1:F1?valueInputOption=RAW',{values:[['name','original','balance','rate','payment','updated']]});
   await sheetsReq('PUT','/'+spreadsheetId+'/values/Spending!A1:F1?valueInputOption=RAW',{values:[['date','monthKey','desc','amount','category','added']]});
+  await sheetsReq('PUT','/'+spreadsheetId+'/values/Payments!A1:C1?valueInputOption=RAW',{values:[['month','amount','note']]});
 }
 
-async function loadFromSheets() {
+async function loadFromSheets(){
   setSyncStatus('syncing','Loading...');
-  try {
+  try{
     await findOrCreateSheet();
-    const dr = await sheetsReq('GET','/'+spreadsheetId+'/values/Debts!A2:F1000');
-    debts = (dr.values||[]).map(r=>({name:r[0]||'',original:parseFloat(r[1])||0,balance:parseFloat(r[2])||0,rate:parseFloat(r[3])||0,payment:parseFloat(r[4])||0})).filter(d=>d.name);
-    const sr = await sheetsReq('GET','/'+spreadsheetId+'/values/Spending!A2:F100000');
-    spendingData = {};
+    const dr=await sheetsReq('GET','/'+spreadsheetId+'/values/Debts!A2:F1000');
+    debts=(dr.values||[]).map(r=>({name:r[0]||'',original:parseFloat(r[1])||0,balance:parseFloat(r[2])||0,rate:parseFloat(r[3])||0,payment:parseFloat(r[4])||0})).filter(d=>d.name);
+    const sr=await sheetsReq('GET','/'+spreadsheetId+'/values/Spending!A2:F100000');
+    spendingData={};
     (sr.values||[]).forEach(r=>{
       const t={date:r[0],monthKey:r[1],desc:r[2],amount:parseFloat(r[3])||0,category:r[4]};
-      if(!spendingData[t.monthKey]) spendingData[t.monthKey]=[];
+      if(!spendingData[t.monthKey])spendingData[t.monthKey]=[];
       spendingData[t.monthKey].push(t);
     });
+    const pr=await sheetsReq('GET','/'+spreadsheetId+'/values/Payments!A2:C1000');
+    payments=(pr.values||[]).map(r=>({month:r[0],amount:parseFloat(r[1])||0,note:r[2]||''})).filter(p=>p.month);
     setSyncStatus('synced','Synced');
     renderDebts();
-    if (document.getElementById('tab-spending').classList.contains('active')) renderSpending();
-  } catch(e) {
+    renderSpending();
+  }catch(e){
     setSyncStatus('error','Sync error');
     console.error(e);
-    alert('Could not connect to Google Sheets. Your token may have expired — try signing out and back in.');
+    alert('Could not connect to Google Sheets. Try signing out and back in.');
   }
 }
 
-async function saveDebtsToSheet() {
+async function saveDebtsToSheet(){
   setSyncStatus('syncing','Saving...');
-  try {
+  try{
     await sheetsReq('PUT','/'+spreadsheetId+'/values/Debts!A1:F1000?valueInputOption=RAW',{
       values:[['name','original','balance','rate','payment','updated'],...debts.map(d=>[d.name,d.original,d.balance,d.rate,d.payment,new Date().toISOString()])]
     });
     setSyncStatus('synced','Saved');
-  } catch(e) { setSyncStatus('error','Save failed'); console.error(e); }
+  }catch(e){setSyncStatus('error','Save failed');console.error(e);}
 }
 
-async function appendSpendingToSheet(transactions) {
+async function savePaymentsToSheet(){
   setSyncStatus('syncing','Saving...');
-  try {
-    const rows = transactions.map(t=>[t.date,t.monthKey,t.desc,t.amount,t.category,new Date().toISOString()]);
+  try{
+    await sheetsReq('PUT','/'+spreadsheetId+'/values/Payments!A1:C1000?valueInputOption=RAW',{
+      values:[['month','amount','note'],...payments.map(p=>[p.month,p.amount,p.note])]
+    });
+    setSyncStatus('synced','Saved');
+  }catch(e){setSyncStatus('error','Save failed');console.error(e);}
+}
+
+async function appendSpendingToSheet(transactions){
+  setSyncStatus('syncing','Saving...');
+  try{
+    const rows=transactions.map(t=>[t.date,t.monthKey,t.desc,t.amount,t.category,new Date().toISOString()]);
     await sheetsReq('POST','/'+spreadsheetId+'/values/Spending!A1?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{values:rows});
     setSyncStatus('synced','Saved');
-  } catch(e) { setSyncStatus('error','Save failed'); console.error(e); }
+  }catch(e){setSyncStatus('error','Save failed');console.error(e);}
 }
 
-// TAB
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
-  if (name==='spending') renderSpending();
-}
+// ── MODALS ──
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
 
-// DEBT
-function openAddDebt() {
+// ── DEBT ──
+function openAddDebt(){
   document.getElementById('modal-title').textContent='Add a Debt';
   ['d-name','d-original','d-balance','d-rate','d-payment'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('edit-index').value='';
   document.getElementById('debt-modal').classList.add('open');
 }
-function openEditDebt(i) {
+function openEditDebt(i){
   const d=debts[i];
   document.getElementById('modal-title').textContent='Edit Debt';
   document.getElementById('d-name').value=d.name;
@@ -511,91 +588,116 @@ function openEditDebt(i) {
   document.getElementById('edit-index').value=i;
   document.getElementById('debt-modal').classList.add('open');
 }
-function closeModal() { document.getElementById('debt-modal').classList.remove('open'); }
-document.getElementById('debt-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-async function saveDebt() {
+async function saveDebt(){
   const name=document.getElementById('d-name').value.trim();
   const original=parseFloat(document.getElementById('d-original').value);
   const balance=parseFloat(document.getElementById('d-balance').value);
   const rate=parseFloat(document.getElementById('d-rate').value);
   const payment=parseFloat(document.getElementById('d-payment').value);
-  if (!name||isNaN(balance)||isNaN(rate)||isNaN(payment)) { alert('Please fill in all fields.'); return; }
+  if(!name||isNaN(balance)||isNaN(rate)||isNaN(payment)){alert('Please fill in all fields.');return;}
   const debt={name,original:isNaN(original)?balance:original,balance,rate,payment};
   const idx=document.getElementById('edit-index').value;
-  if (idx!=='') debts[parseInt(idx)]=debt; else debts.push(debt);
-  closeModal();
+  if(idx!=='')debts[parseInt(idx)]=debt; else debts.push(debt);
+  closeModal('debt-modal');
   renderDebts();
   await saveDebtsToSheet();
 }
 
-async function deleteDebt(i) {
-  if (!confirm('Remove this debt?')) return;
+async function deleteDebt(i){
+  if(!confirm('Remove this debt?'))return;
   debts.splice(i,1);
   renderDebts();
   await saveDebtsToSheet();
 }
 
-function updateExtraPayment(val) {
+function updateExtraPayment(val){
   extraPayment=parseFloat(val)||0;
   document.getElementById('extra-label').textContent='$'+extraPayment;
   renderDebtChart();
   renderPayoffTimeline();
 }
 
-function simulatePayoff(list, extra) {
+// ── PAYMENT LOG ──
+function openLogPayment(){
+  const now=new Date();
+  document.getElementById('p-month').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  document.getElementById('p-amount').value='';
+  document.getElementById('p-note').value='';
+  document.getElementById('payment-modal').classList.add('open');
+}
+
+async function savePayment(){
+  const month=document.getElementById('p-month').value;
+  const amount=parseFloat(document.getElementById('p-amount').value);
+  const note=document.getElementById('p-note').value.trim();
+  if(!month||isNaN(amount)||amount<=0){alert('Please fill in the month and amount.');return;}
+  // Replace if same month exists
+  const existing=payments.findIndex(p=>p.month===month);
+  if(existing!==-1)payments[existing]={month,amount,note};
+  else payments.push({month,amount,note});
+  payments.sort((a,b)=>b.month.localeCompare(a.month));
+  closeModal('payment-modal');
+  renderPaymentLog();
+  renderDebtStats();
+  await savePaymentsToSheet();
+}
+
+async function deletePayment(i){
+  if(!confirm('Remove this payment entry?'))return;
+  payments.splice(i,1);
+  renderPaymentLog();
+  renderDebtStats();
+  await savePaymentsToSheet();
+}
+
+// ── SIMULATION ──
+function simulatePayoff(list,extra){
   const sorted=list.map((d,i)=>({...d,idx:i})).sort((a,b)=>b.rate-a.rate);
   let bals=sorted.map(d=>d.balance);
   const history=[{month:0,total:bals.reduce((a,b)=>a+b,0)}];
   let m=0;
   while(bals.some(b=>b>0.01)&&m<600){
     m++;
-    for(let j=0;j<sorted.length;j++){
-      if(bals[j]<=0)continue;
-      bals[j]=Math.max(0,bals[j]+bals[j]*(sorted[j].rate/100/12)-sorted[j].payment);
-    }
+    for(let j=0;j<sorted.length;j++){if(bals[j]<=0)continue;bals[j]=Math.max(0,bals[j]+bals[j]*(sorted[j].rate/100/12)-sorted[j].payment);}
     let el=extra;
-    for(let j=0;j<sorted.length;j++){
-      if(bals[j]<=0||el<=0)continue;
-      const ap=Math.min(el,bals[j]);
-      bals[j]=Math.max(0,bals[j]-ap);
-      el-=ap;
-    }
+    for(let j=0;j<sorted.length;j++){if(bals[j]<=0||el<=0)continue;const ap=Math.min(el,bals[j]);bals[j]=Math.max(0,bals[j]-ap);el-=ap;}
     bals=bals.map(b=>Math.max(0,b));
     history.push({month:m,total:bals.reduce((a,b)=>a+b,0)});
   }
   return history;
 }
+function payoffDateFromMonths(m){const d=new Date();d.setMonth(d.getMonth()+m);return d.toLocaleDateString('en-US',{month:'long',year:'numeric'});}
+function debtPayoffMonth(debt,extra){let bal=debt.balance,m=0;while(bal>0.01&&m<600){bal=Math.max(0,bal+bal*(debt.rate/100/12)-(debt.payment+extra));m++;}return m;}
 
-function payoffDateFromMonths(m) {
-  const d=new Date(); d.setMonth(d.getMonth()+m);
-  return d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-}
-
-function debtPayoffMonth(debt,extra) {
-  let bal=debt.balance,m=0;
-  while(bal>0.01&&m<600){bal=Math.max(0,bal+bal*(debt.rate/100/12)-(debt.payment+extra));m++;}
-  return m;
-}
-
-function renderDebts() {
+// ── RENDER DEBT STATS ──
+function renderDebtStats(){
   const total=debts.reduce((s,d)=>s+d.balance,0);
   const avgRate=debts.length?debts.reduce((s,d)=>s+d.rate,0)/debts.length:0;
+  const totalPaid=payments.reduce((s,p)=>s+p.amount,0);
   document.getElementById('stat-total').textContent=fmt(total);
   document.getElementById('stat-count').textContent=debts.length;
   document.getElementById('stat-avgrate').textContent=avgRate.toFixed(1)+'%';
-  if (debts.length===0) {
+  document.getElementById('stat-paid').textContent=fmt(totalPaid);
+  if(debts.length>0){
+    const h=simulatePayoff(debts,extraPayment);
+    document.getElementById('stat-payoff').textContent=payoffDateFromMonths(h.length-1);
+  } else {
+    document.getElementById('stat-payoff').textContent='--';
+  }
+}
+
+function renderDebts(){
+  renderDebtStats();
+  if(debts.length===0){
     document.getElementById('debt-list-empty').style.display='';
     document.getElementById('debt-list').style.display='none';
     document.getElementById('payoff-section').style.display='none';
-    document.getElementById('stat-payoff').textContent='--';
     return;
   }
   document.getElementById('debt-list-empty').style.display='none';
   document.getElementById('debt-list').style.display='';
   document.getElementById('payoff-section').style.display='';
-  const history=simulatePayoff(debts,extraPayment);
-  document.getElementById('stat-payoff').textContent=payoffDateFromMonths(history.length-1);
   const sorted=[...debts].sort((a,b)=>b.rate-a.rate);
   const tbody=document.getElementById('debt-tbody');
   tbody.innerHTML='';
@@ -610,14 +712,16 @@ function renderDebts() {
       <td>${fmt(d.payment)}/mo</td>
       <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-track"><div class="progress-fill ${fc}" style="width:${pct.toFixed(1)}%"></div></div><span style="font-size:12px;color:var(--text3)">${pct.toFixed(0)}%</span></div></td>
       <td style="font-size:13px;color:var(--text2)">${months<=600?payoffDateFromMonths(months):'Increase payment'}</td>
-      <td style="white-space:nowrap"><button class="btn" style="padding:0.3rem 0.7rem;font-size:12px" onclick="openEditDebt(${oi})">Edit</button><button class="btn btn-danger" onclick="deleteDebt(${oi})">✕</button></td>`;
+      <td style="white-space:nowrap"><button class="btn btn-sm" onclick="openEditDebt(${oi})">Edit</button><button class="btn btn-danger" onclick="deleteDebt(${oi})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   renderDebtChart();
   renderPayoffTimeline();
+  renderPaymentLog();
 }
 
-function renderDebtChart() {
+function renderDebtChart(){
+  if(!debts.length)return;
   const h=simulatePayoff(debts,extraPayment);
   const h0=simulatePayoff(debts,0);
   const step=Math.max(1,Math.ceil(h.length/24));
@@ -637,7 +741,7 @@ function renderDebtChart() {
   });
 }
 
-function renderPayoffTimeline() {
+function renderPayoffTimeline(){
   const items=[...debts].map(d=>({name:d.name,months:debtPayoffMonth(d,extraPayment)})).sort((a,b)=>a.months-b.months);
   const tl=document.getElementById('payoff-timeline');
   tl.innerHTML='';
@@ -649,13 +753,44 @@ function renderPayoffTimeline() {
   });
 }
 
-// SPENDING
+function renderPaymentLog(){
+  const empty=document.getElementById('payment-log-empty');
+  const content=document.getElementById('payment-log-content');
+  if(payments.length===0){empty.style.display='';content.style.display='none';return;}
+  empty.style.display='none';content.style.display='';
+
+  // Chart
+  const recent=payments.slice(0,6).reverse();
+  if(paymentChart)paymentChart.destroy();
+  paymentChart=new Chart(document.getElementById('payment-chart'),{
+    type:'bar',
+    data:{
+      labels:recent.map(p=>monthLabel(p.month)),
+      datasets:[{label:'Paid',data:recent.map(p=>Math.round(p.amount)),backgroundColor:'rgba(45,90,61,0.7)',borderRadius:6,borderSkipped:false}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)}}},
+      scales:{x:{ticks:{font:{size:11}},grid:{display:false}},y:{ticks:{font:{size:11},callback:v=>fmtShort(v)},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:true}}}
+  });
+
+  // List
+  const list=document.getElementById('payment-list');
+  list.innerHTML=payments.slice(0,12).map((p,i)=>`
+    <div class="payment-entry">
+      <div class="payment-month">${monthLabel(p.month)}</div>
+      <div class="payment-amount">${fmt(p.amount)}</div>
+      <div class="payment-note">${p.note||''}</div>
+      <button class="btn btn-danger" onclick="deletePayment(${i})">✕</button>
+    </div>`).join('');
+}
+
+// ── SPENDING ──
 function handleDragOver(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag-over');}
 function handleDragLeave(){document.getElementById('dropzone').classList.remove('drag-over');}
 function handleDrop(e){e.preventDefault();document.getElementById('dropzone').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f?.name.endsWith('.csv'))handleFile(f);}
 function handleFile(file){if(!file)return;const r=new FileReader();r.onload=e=>parseCSV(e.target.result);r.readAsText(file);}
 
-async function parseCSV(text) {
+async function parseCSV(text){
   const lines=text.trim().split('\n');
   if(lines.length<2)return;
   const header=lines[0].toLowerCase().replace(/"/g,'').split(',').map(h=>h.trim());
@@ -694,10 +829,15 @@ function smartSplitCSV(line){
 
 function renderSpending(){
   const months=Object.keys(spendingData).sort().reverse();
-  if(months.length===0){document.getElementById('spending-content').style.display='none';document.getElementById('spending-empty').style.display='';return;}
+  if(months.length===0){
+    document.getElementById('spending-content').style.display='none';
+    document.getElementById('spending-empty').style.display='';
+    return;
+  }
   document.getElementById('spending-content').style.display='';
   document.getElementById('spending-empty').style.display='none';
   if(!selectedMonth||!spendingData[selectedMonth])selectedMonth=months[0];
+
   const mtabs=document.getElementById('month-selector');
   mtabs.innerHTML='';
   months.slice(0,12).forEach(m=>{
@@ -708,26 +848,31 @@ function renderSpending(){
     btn.onclick=()=>{selectedMonth=m;renderSpending();};
     mtabs.appendChild(btn);
   });
+
   const txns=spendingData[selectedMonth]||[];
   const total=txns.reduce((s,t)=>s+t.amount,0);
   const catTotals={};
   txns.forEach(t=>{catTotals[t.category]=(catTotals[t.category]||0)+t.amount;});
   const topCat=Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0];
+
   document.getElementById('spending-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">Total Spent</div><div class="stat-value">${fmt(total)}</div></div>
     <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-value">${txns.length}</div></div>
     <div class="stat-card"><div class="stat-label">Daily Average</div><div class="stat-value">${fmt(total/30)}</div></div>
     <div class="stat-card"><div class="stat-label">Top Category</div><div class="stat-value" style="font-size:1.3rem">${topCat?topCat[0]:'--'}</div><div class="stat-sub">${topCat?fmt(topCat[1]):''}</div></div>`;
+
   const sorted=Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
   const maxAmt=sorted[0]?.[1]||1;
   document.getElementById('category-breakdown').innerHTML=sorted.map(([cat,amt])=>`
     <div class="cat-row"><div class="cat-name">${cat}</div><div class="cat-bar-wrap"><div class="cat-bar" style="width:${(amt/maxAmt*100).toFixed(1)}%;background:${CAT_COLORS[cat]||'#888'}"></div></div><div class="cat-amount">${fmt(amt)}</div></div>`).join('');
+
   if(pieChart)pieChart.destroy();
   pieChart=new Chart(document.getElementById('spending-pie'),{
     type:'doughnut',
     data:{labels:sorted.map(([c])=>c),datasets:[{data:sorted.map(([,v])=>Math.round(v*100)/100),backgroundColor:sorted.map(([c])=>CAT_COLORS[c]||'#888'),borderWidth:2,borderColor:'#fff'}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:6}},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)+' ('+(ctx.raw/total*100).toFixed(1)+'%)'}}}}
   });
+
   const allMonths=months.slice(0,6).reverse();
   const momData=allMonths.map(m=>Math.round((spendingData[m]||[]).reduce((s,x)=>s+x.amount,0)));
   const momLabels=allMonths.map(m=>{const[y,mo]=m.split('-');return new Date(+y,+mo-1,1).toLocaleDateString('en-US',{month:'short',year:'2-digit'});});
@@ -737,6 +882,7 @@ function renderSpending(){
     data:{labels:momLabels,datasets:[{label:'Total',data:momData,backgroundColor:allMonths.map(m=>m===selectedMonth?'#2d5a3d':'rgba(45,90,61,0.25)'),borderRadius:6,borderSkipped:false}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}},grid:{display:false}},y:{ticks:{font:{size:11},callback:v=>fmtShort(v)},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:true}}}
   });
+
   document.getElementById('month-compare').innerHTML=allMonths.reverse().map((m,i,arr)=>{
     const[y,mo]=m.split('-');
     const label=new Date(+y,+mo-1,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
@@ -744,9 +890,10 @@ function renderSpending(){
     const prev=i<arr.length-1?(spendingData[arr[i+1]]||[]).reduce((s,x)=>s+x.amount,0):null;
     const delta=prev!==null?t-prev:null;
     return`<div class="compare-card" style="${m===selectedMonth?'border-color:var(--accent);border-width:2px;':''}">
-      <div class="compare-month">${label}</div><div class="compare-total">${fmt(t)}</div>
+      <div class="compare-month-label">${label}</div><div class="compare-total">${fmt(t)}</div>
       ${delta!==null?`<div class="compare-delta ${delta>0?'delta-up':'delta-down'}">${delta>0?'↑':'↓'} ${fmt(Math.abs(delta))} vs prior</div>`:''}
     </div>`;}).join('');
+
   const stx=[...txns].sort((a,b)=>new Date(b.date)-new Date(a.date));
   document.getElementById('transactions-list').innerHTML=stx.slice(0,50).map(t=>`
     <div style="display:flex;align-items:center;gap:1rem;padding:0.7rem 0;border-bottom:1px solid var(--border);font-size:13px;">
@@ -757,16 +904,16 @@ function renderSpending(){
     </div>`).join('')+(txns.length>50?`<p style="font-size:12px;color:var(--text3);text-align:center;padding:0.75rem">Showing 50 of ${txns.length} transactions</p>`:'');
 }
 
-async function init() {
-  const fromCallback = handleAuthCallback();
-  const hasToken = fromCallback || loadStoredToken();
-  if (hasToken) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+// ── INIT ──
+async function init(){
+  const fromCallback=handleAuthCallback();
+  const hasToken=fromCallback||loadStoredToken();
+  if(hasToken){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
     await loadFromSheets();
   }
 }
-
 init();
 </script>
 </body>
