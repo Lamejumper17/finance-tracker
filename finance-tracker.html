@@ -131,6 +131,34 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .empty p{font-size:14px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
 
+/* BUDGET */
+.budget-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:1.5rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.budget-flow-item{padding:1.1rem 1.25rem;background:var(--surface);border-right:1px solid var(--border)}
+.budget-flow-item:last-child{border-right:none}
+.budget-flow-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0.3rem}
+.budget-flow-value{font-family:'DM Serif Display',serif;font-size:1.5rem;letter-spacing:-0.02em}
+.budget-flow-value.red{color:var(--danger)}.budget-flow-value.green{color:var(--good)}.budget-flow-value.accent{color:var(--accent)}
+.budget-flow-sub{font-size:12px;color:var(--text3);margin-top:0.2rem}
+.bcat-row{display:flex;align-items:center;gap:1rem;padding:0.85rem 0;border-bottom:1px solid var(--border);font-size:14px}
+.bcat-row:last-child{border-bottom:none}
+.bcat-name{min-width:130px;font-weight:500}
+.bcat-track{flex:1;background:var(--surface2);border-radius:99px;height:8px;overflow:visible;position:relative}
+.bcat-fill{height:100%;border-radius:99px;transition:width 0.3s}
+.bcat-over-marker{position:absolute;top:-2px;height:12px;width:2px;background:var(--danger);border-radius:1px}
+.bcat-amounts{min-width:160px;text-align:right;font-size:13px;display:flex;gap:0.5rem;justify-content:flex-end;align-items:center}
+.bcat-spent{font-variant-numeric:tabular-nums;font-weight:500}
+.bcat-limit{color:var(--text3);font-variant-numeric:tabular-nums}
+.bcat-status{font-size:11px;font-weight:600;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.bcat-status.over{background:#fdecea;color:var(--danger)}.bcat-status.near{background:var(--warn-light);color:var(--warn)}.bcat-status.ok{background:var(--good-light);color:var(--good)}
+.suggestion-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border);font-size:13px}
+.suggestion-item:last-child{border-bottom:none}
+.suggestion-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.suggestion-text{flex:1;color:var(--text2);line-height:1.5}
+.suggestion-impact{font-weight:500;color:var(--accent);white-space:nowrap;font-size:12px}
+.income-input-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem}
+.income-input-row input{max-width:160px}
+.income-input-row span{font-size:13px;color:var(--text2)}
+
 /* DUPLICATE BANNER */
 .dup-banner{background:var(--warn-light);border:1px solid var(--warn);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin-bottom:1.25rem;display:none}
 .dup-banner-title{font-size:13px;font-weight:600;color:var(--warn);margin-bottom:0.5rem}
@@ -352,6 +380,55 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
     </div>
 
+    <!-- BUDGET -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Budget</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Monthly Income</div>
+      </div>
+      <div class="income-input-row">
+        <input type="number" id="income-input" placeholder="4000" min="0" step="100" style="max-width:160px" oninput="saveIncome()">
+        <span>monthly take-home pay</span>
+        <button class="btn btn-primary btn-sm" onclick="renderBudget()">Update Budget</button>
+      </div>
+    </div>
+
+    <div id="budget-section" style="display:none">
+      <!-- MONEY FLOW -->
+      <div class="budget-flow" id="budget-flow"></div>
+
+      <!-- CATEGORY BUDGETS + SUGGESTIONS -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Category Budgets</div>
+            <span id="budget-month-label" style="font-size:12px;color:var(--text3)"></span>
+          </div>
+          <div id="budget-cats"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Recommendations</div>
+          <div id="budget-suggestions"></div>
+        </div>
+      </div>
+
+      <!-- MONTHLY PLAN -->
+      <div class="card">
+        <div class="card-title">Your Monthly Plan</div>
+        <div id="budget-plan"></div>
+      </div>
+    </div>
+
+    <div id="budget-empty" class="empty">
+      <span class="empty-icon">💰</span>
+      <p>Enter your income above and upload a CSV to generate your budget.</p>
+    </div>
+
     <!-- SPENDING -->
     <div class="section-divider">
       <div class="section-divider-line"></div>
@@ -549,7 +626,7 @@ async function loadFromSheets(){
     const pr=await sheetsReq('GET','/'+spreadsheetId+'/values/DebtPayments!A2:F1000');
     debtPayments=(pr.values||[]).map(r=>({month:r[0],debtName:r[1],amountPaid:parseFloat(r[2])||0,remainingBalance:parseFloat(r[3])||0,note:r[4]||''})).filter(p=>p.month);
     setSyncStatus('synced','Synced');
-    renderDebts();renderSpending();
+    loadIncome();renderDebts();renderSpending();renderBudget();
   }catch(e){setSyncStatus('error','Sync error');console.error(e);alert('Could not connect to Google Sheets. Try signing out and back in.');}
 }
 
@@ -1008,6 +1085,164 @@ function renderSpending(){
       <div style="padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:${CAT_COLORS[t.category]||'#888'}22;color:${CAT_COLORS[t.category]||'#888'};white-space:nowrap">${t.category}</div>
       <div style="min-width:72px;text-align:right;font-variant-numeric:tabular-nums;font-weight:500">${fmt(t.amount)}</div>
     </div>`).join(''))+(spendOnly.length>50?`<p style="font-size:12px;color:var(--text3);text-align:center;padding:0.75rem">Showing 50 of ${spendOnly.length} transactions</p>`:'');
+  renderBudget();
+}
+
+// ── BUDGET ──
+const BUDGET_RATIOS={'Food & Dining':0.12,'Shopping':0.05,'Gas & Transport':0.07,'Bills & Utilities':0.10,'Entertainment':0.05,'Health':0.04,'Travel':0.03,'Other':0.04};
+
+function saveIncome(){
+  const v=parseFloat(document.getElementById('income-input').value)||0;
+  localStorage.setItem('ft_income',v);
+}
+
+function loadIncome(){
+  const v=localStorage.getItem('ft_income');
+  if(v){document.getElementById('income-input').value=v;}
+  return parseFloat(v)||0;
+}
+
+function getAvgSpendingByCategory(){
+  const allMonths=Object.keys(spendingData).sort().reverse().slice(0,3);
+  if(allMonths.length===0)return{};
+  const totals={};const counts={};
+  allMonths.forEach(m=>{
+    const txns=spendingData[m]||[];
+    const catTotals={};
+    txns.forEach(t=>{if(t.category!=='Debt Payments')catTotals[t.category]=(catTotals[t.category]||0)+t.amount;});
+    Object.entries(catTotals).forEach(([c,v])=>{totals[c]=(totals[c]||0)+v;counts[c]=(counts[c]||0)+1;});
+  });
+  const avg={};Object.keys(totals).forEach(c=>avg[c]=totals[c]/allMonths.length);
+  return avg;
+}
+
+function renderBudget(){
+  const income=loadIncome();
+  const budgetEmpty=document.getElementById('budget-empty');
+  const budgetSection=document.getElementById('budget-section');
+
+  const hasSpending=Object.keys(spendingData).length>0;
+  const hasIncome=income>0;
+
+  if(!hasIncome||!hasSpending){
+    budgetEmpty.style.display='';budgetSection.style.display='none';
+    return;
+  }
+  budgetEmpty.style.display='none';budgetSection.style.display='';
+
+  // Figures
+  const minDebtPayments=debts.reduce((s,d)=>s+d.payment,0);
+  const avgSpending=getAvgSpendingByCategory();
+  const avgTotalSpend=Object.values(avgSpending).reduce((s,v)=>s+v,0);
+  const afterDebt=income-minDebtPayments;
+  const leftoverForExtra=Math.max(0,afterDebt-avgTotalSpend);
+
+  // Recommended category budgets: use 90% of afterDebt proportionally, capped reasonably
+  const spendBudget=afterDebt*0.88;
+  const catBudgets={};
+  const cats=Object.keys({...avgSpending,...BUDGET_RATIOS});
+  cats.forEach(c=>{
+    if(c==='Debt Payments')return;
+    const ratio=BUDGET_RATIOS[c]||0.03;
+    const suggested=income*ratio;
+    const actual=avgSpending[c]||0;
+    catBudgets[c]=Math.round(Math.min(actual*0.9,suggested*1.1));
+  });
+  const budgetedTotal=Object.values(catBudgets).reduce((s,v)=>s+v,0);
+  const extraToDebt=Math.max(0,afterDebt-budgetedTotal);
+
+  // FLOW
+  document.getElementById('budget-flow').innerHTML=`
+    <div class="budget-flow-item">
+      <div class="budget-flow-label">Take-Home Income</div>
+      <div class="budget-flow-value">${fmt(income)}</div>
+      <div class="budget-flow-sub">per month</div>
+    </div>
+    <div class="budget-flow-item">
+      <div class="budget-flow-label">Min. Debt Payments</div>
+      <div class="budget-flow-value red">${fmt(minDebtPayments)}</div>
+      <div class="budget-flow-sub">${debts.length} debt${debts.length!==1?'s':''}</div>
+    </div>
+    <div class="budget-flow-item">
+      <div class="budget-flow-label">Living Budget</div>
+      <div class="budget-flow-value">${fmt(budgetedTotal)}</div>
+      <div class="budget-flow-sub">across all categories</div>
+    </div>
+    <div class="budget-flow-item">
+      <div class="budget-flow-label">Extra to Debt</div>
+      <div class="budget-flow-value accent">${fmt(extraToDebt)}</div>
+      <div class="budget-flow-sub">accelerates payoff</div>
+    </div>`;
+
+  // CATEGORY BUDGETS vs current month spending
+  const currentMonthKey=selectedMonth||Object.keys(spendingData).sort().reverse()[0];
+  if(currentMonthKey)document.getElementById('budget-month-label').textContent='vs '+monthLabel(currentMonthKey);
+  const currentSpend=spendingData[currentMonthKey]||[];
+  const currentCatTotals={};
+  currentSpend.forEach(t=>{if(t.category!=='Debt Payments')currentCatTotals[t.category]=(currentCatTotals[t.category]||0)+t.amount;});
+
+  const catRows=Object.entries(catBudgets).sort((a,b)=>b[1]-a[1]).map(([cat,limit])=>{
+    const spent=currentCatTotals[cat]||0;
+    const pct=Math.min(100,(spent/limit)*100);
+    const over=spent>limit;
+    const near=!over&&pct>=80;
+    const color=over?'#c0392b':near?'#b8860b':'#2d7a4f';
+    const statusClass=over?'over':near?'near':'ok';
+    const statusText=over?`+${fmt(spent-limit)}`:'On track';
+    const overMarker=over?`<div class="bcat-over-marker" style="left:${Math.min(98,(limit/Math.max(spent,limit))*100).toFixed(0)}%"></div>`:'';
+    return`<div class="bcat-row">
+      <div class="bcat-name">${cat}</div>
+      <div class="bcat-track">
+        <div class="bcat-fill" style="width:${pct.toFixed(1)}%;background:${color}"></div>
+        ${overMarker}
+      </div>
+      <div class="bcat-amounts">
+        <span class="bcat-spent" style="color:${color}">${fmt(spent)}</span>
+        <span class="bcat-limit">/ ${fmt(limit)}</span>
+        <span class="bcat-status ${statusClass}">${statusText}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('budget-cats').innerHTML=catRows||'<p style="font-size:13px;color:var(--text3);padding:1rem 0">No spending data yet for this month.</p>';
+
+  // SUGGESTIONS
+  const suggestions=[];
+  // Find overspent categories
+  Object.entries(currentCatTotals).forEach(([cat,spent])=>{
+    const limit=catBudgets[cat]||0;
+    if(spent>limit&&limit>0){
+      const over=spent-limit;
+      suggestions.push({icon:'✂',text:`You went over in ${cat} by ${fmt(over)} this month. Cutting back to your ${fmt(limit)} budget would free up ${fmt(over)} for debt.`,impact:`+${fmt(over)}/mo to debt`,priority:over});
+    }
+  });
+  // High interest rate opportunity
+  const highRate=debts.filter(d=>d.rate>=20).sort((a,b)=>b.rate-a.rate)[0];
+  if(highRate&&extraToDebt>0){
+    const monthlyInterest=highRate.balance*(highRate.rate/100/12);
+    suggestions.push({icon:'🎯',text:`Your ${highRate.name} at ${highRate.rate}% is costing you ${fmt(monthlyInterest)}/month in interest. Putting your extra ${fmt(extraToDebt)} there first saves the most.`,impact:`${fmt(extraToDebt)}/mo`,priority:monthlyInterest});
+  }
+  // Shopping / discretionary
+  if(currentCatTotals['Shopping']>0&&catBudgets['Shopping']>0){
+    const over=Math.max(0,currentCatTotals['Shopping']-catBudgets['Shopping']);
+    if(over>0)suggestions.push({icon:'🛍',text:`Consider a no-spend week on Shopping to recover the ${fmt(over)} overage and redirect it to your highest-rate debt.`,impact:`+${fmt(over)} to debt`,priority:over*0.8});
+  }
+  if(leftoverForExtra>200)suggestions.push({icon:'💡',text:`You have ${fmt(leftoverForExtra)} unallocated each month after your budget. Putting this toward ${highRate?highRate.name:'your top debt'} could shorten your payoff by several months.`,impact:`+${fmt(leftoverForExtra)}/mo`,priority:leftoverForExtra*0.5});
+  suggestions.sort((a,b)=>b.priority-a.priority);
+  document.getElementById('budget-suggestions').innerHTML=suggestions.length>0
+    ?suggestions.slice(0,5).map(s=>`<div class="suggestion-item"><span class="suggestion-icon">${s.icon}</span><span class="suggestion-text">${s.text}</span><span class="suggestion-impact">${s.impact}</span></div>`).join('')
+    :'<p style="font-size:13px;color:var(--text3);padding:0.5rem 0">Upload a few months of spending to get personalized recommendations.</p>';
+
+  // MONTHLY PLAN
+  const planRows=[
+    {label:'Take-home income',amount:income,style:'font-weight:500'},
+    {label:`Minimum debt payments (${debts.length} debts)`,amount:-minDebtPayments,style:'color:var(--danger)'},
+    ...Object.entries(catBudgets).sort((a,b)=>b[1]-a[1]).map(([c,v])=>({label:c,amount:-v,style:'color:var(--text2)'})),
+    {label:'Extra toward debt (avalanche)',amount:extraToDebt,style:'color:var(--accent);font-weight:500;border-top:1px solid var(--border);padding-top:0.5rem;margin-top:0.25rem'},
+  ];
+  document.getElementById('budget-plan').innerHTML=`
+    <div style="font-size:13px;max-width:520px">
+      ${planRows.map(r=>`<div style="display:flex;justify-content:space-between;padding:0.4rem 0;${r.style||''}"><span>${r.label}</span><span style="font-variant-numeric:tabular-nums;font-weight:500">${r.amount<0?'−'+fmt(Math.abs(r.amount)):fmt(r.amount)}</span></div>`).join('')}
+    </div>`;
 }
 
 // ── INIT ──
@@ -1020,4 +1255,3 @@ init();
 </script>
 </body>
 </html>
-
