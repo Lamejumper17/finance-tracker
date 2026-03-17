@@ -56,7 +56,7 @@ main{padding:2.5rem 2rem;max-width:1100px;margin:0 auto}
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1rem}
 .form-group{display:flex;flex-direction:column;gap:0.35rem}
 label{font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--text2)}
-input[type="text"],input[type="number"],input[type="month"],select{padding:0.55rem 0.75rem;border:1px solid var(--border-med);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--surface);transition:border-color 0.15s,box-shadow 0.15s;width:100%}
+input[type="text"],input[type="number"],input[type="month"],input[type="date"],select{padding:0.55rem 0.75rem;border:1px solid var(--border-med);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--surface);transition:border-color 0.15s,box-shadow 0.15s;width:100%}
 input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,90,61,0.1)}
 .debt-table{width:100%;border-collapse:collapse;font-size:14px}
 .debt-table th{text-align:left;padding:0.6rem 0.75rem;font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
@@ -426,7 +426,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
     <div id="budget-empty" class="empty">
       <span class="empty-icon">💰</span>
-      <p>Enter your income above and upload a CSV to generate your budget.</p>
+      <p>Enter your income above and add some transactions to generate your budget.</p>
     </div>
 
     <!-- SPENDING -->
@@ -438,23 +438,51 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
     <div class="month-tabs" id="month-selector"></div>
 
-    <!-- DUPLICATE WARNING BANNER -->
-    <div class="dup-banner" id="dup-banner">
-      <div class="dup-banner-title">⚠ Possible duplicate transactions detected</div>
-      <p style="font-size:12px;color:var(--text2);margin-bottom:0.75rem">These transactions look like credit card payments already logged in your debt tracker. Remove them to avoid double-counting.</p>
-      <div id="dup-list"></div>
-      <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
-        <button class="btn btn-warn btn-sm" onclick="removeDuplicates()">Remove all flagged</button>
-        <button class="btn btn-sm" onclick="dismissDuplicates()">Keep all — not duplicates</button>
+    <!-- ADD TRANSACTION FORM -->
+    <div class="card" id="add-txn-card">
+      <div class="card-header">
+        <div class="card-title">Add Transaction</div>
+        <button class="btn btn-sm" onclick="toggleTxnForm()" id="txn-form-toggle">+ New</button>
       </div>
-    </div>
-
-    <div class="dropzone" id="dropzone" onclick="document.getElementById('csv-input').click()"
-         ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-      <span class="dropzone-icon">📂</span>
-      <p id="dropzone-label"><strong>Drop a bank CSV here</strong> or click to browse</p>
-      <p class="hint">Works with Chase, Bank of America, Capital One, Wells Fargo, and most major banks.</p>
-      <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleFile(this.files[0])">
+      <div id="txn-form" style="display:none">
+        <div class="form-row" style="margin-bottom:0.75rem">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="txn-date">
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label>Description</label>
+            <input type="text" id="txn-desc" placeholder="e.g. Netflix, Grocery Store, Gas" oninput="suggestCategory()">
+          </div>
+          <div class="form-group">
+            <label>Amount ($)</label>
+            <input type="number" id="txn-amount" placeholder="0.00" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="form-row" style="align-items:end">
+          <div class="form-group" style="grid-column:span 2">
+            <label>Category <span id="cat-suggestion" style="font-size:11px;color:var(--accent);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px"></span></label>
+            <select id="txn-category">
+              <option value="Food & Dining">Food & Dining</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Gas & Transport">Gas & Transport</option>
+              <option value="Bills & Utilities">Bills & Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Health">Health</option>
+              <option value="Travel">Travel</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="opacity:0">Save</label>
+            <button class="btn btn-primary" onclick="saveTransaction()">Save Transaction</button>
+          </div>
+          <div class="form-group">
+            <label style="opacity:0">Cancel</label>
+            <button class="btn" onclick="toggleTxnForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="spending-content" style="display:none">
@@ -482,7 +510,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
     <div id="spending-empty" class="empty">
       <span class="empty-icon">📊</span>
-      <p>Upload a CSV from your bank to see your spending breakdown.</p>
+      <p>Hit "+ New" above to add your first transaction.</p>
     </div>
 
   </main>
@@ -570,7 +598,7 @@ const SCOPES='https://www.googleapis.com/auth/spreadsheets https://www.googleapi
 
 let accessToken=null,spreadsheetId=localStorage.getItem('ft_sheet_id')||null;
 let debts=[],debtPayments=[],spendingData={};
-let selectedMonth=null,oneTimePays=[],pendingDuplicates=[];
+let selectedMonth=null,oneTimePaysLocal=[];
 let pieChart=null,momChart=null,calcChart=null,payChart=null,balChart=null;
 
 // ── HELPERS ──
@@ -943,78 +971,70 @@ const CATEGORY_RULES=[
   {k:['restaurant','cafe','coffee','pizza','burger','sushi','mcdonald','starbucks','chipotle','grubhub','doordash','uber eats','panera','subway','taco','wendy','chick-fil','dunkin','grocery','whole foods','trader joe','safeway','kroger','aldi'],c:'Food & Dining'},
   {k:['amazon','walmart','target','best buy','etsy','ebay','clothing','apparel','nike','gap','h&m','nordstrom','macys','tjmaxx','marshalls','zara','fashion'],c:'Shopping'},
   {k:['gas','shell','bp ','exxon','chevron','sunoco','wawa','speedway','uber','lyft','taxi','metro','parking','transit','toll'],c:'Gas & Transport'},
-  {k:['electric','water ','internet','verizon','at&t','t-mobile','comcast','xfinity','rent','mortgage','utility','insurance','netflix','spotify','hulu','apple','google','amazon prime','subscription'],c:'Bills & Utilities'},
-  {k:['movie','cinema','theater','ticketmaster','concert','steam','playstation','xbox','nintendo','twitch','bar ','brewery','tavern','nightclub'],c:'Entertainment'},
+  {k:['electric','water ','internet','verizon','at&t','t-mobile','comcast','xfinity','rent','mortgage','utility','insurance','netflix','spotify','hulu','apple','google','amazon prime','subscription','peco','tiaa','openai','chatgpt','microsoft','xbox','onlyfans'],c:'Bills & Utilities'},
+  {k:['movie','cinema','theater','ticketmaster','concert','steam','playstation','xbox','nintendo','twitch','bar ','brewery','tavern','nightclub','youtube'],c:'Entertainment'},
   {k:['pharmacy','cvs','walgreen','rite aid','doctor','dentist','hospital','medical','health','gym','fitness','planet fitness','vitamin'],c:'Health'},
-  {k:['hotel','airbnb','airline','delta','united','american airlines','southwest','flight','expedia','booking.com','cruise','resort','vacation'],c:'Travel'},
+  {k:['hotel','airbnb','airline','delta','united','american airlines','southwest','flight','expedia','booking.com','cruise','resort','vacation','airalo','indigo'],c:'Travel'},
 ];
 function categorize(desc){const d=(desc||'').toLowerCase();for(const r of CATEGORY_RULES)if(r.k.some(k=>d.includes(k)))return r.c;return'Other';}
 
-function handleDragOver(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag-over');}
-function handleDragLeave(){document.getElementById('dropzone').classList.remove('drag-over');}
-function handleDrop(e){e.preventDefault();document.getElementById('dropzone').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f?.name.endsWith('.csv'))handleFile(f);}
-function handleFile(file){if(!file)return;const r=new FileReader();r.onload=e=>parseCSV(e.target.result);r.readAsText(file);}
-
-async function parseCSV(text){
-  const lines=text.trim().split('\n');if(lines.length<2)return;
-  const header=lines[0].toLowerCase().replace(/"/g,'').split(',').map(h=>h.trim());
-  const descIdx=header.findIndex(h=>h.includes('description')||h.includes('memo')||h.includes('name')||h.includes('details')||h.includes('payee'));
-  const amtIdx=header.findIndex(h=>h.includes('amount')||h==='debit'||h==='credit');
-  const dateIdx=header.findIndex(h=>h.includes('date')||h==='trans date'||h==='post date');
-  if(amtIdx===-1||dateIdx===-1){alert('Could not detect amount or date columns.');return;}
-  const transactions=[];
-  for(let i=1;i<lines.length;i++){
-    const row=smartSplit(lines[i]);if(!row||row.length<2)continue;
-    const rawDate=(row[dateIdx]||'').replace(/"/g,'').trim();
-    const rawAmt=(row[amtIdx]||'').replace(/[$",]/g,'').trim();
-    const rawDesc=descIdx!==-1?(row[descIdx]||'').replace(/"/g,'').trim():'Unknown';
-    const amount=parseFloat(rawAmt);if(isNaN(amount))continue;
-    const date=new Date(rawDate);if(isNaN(date.getTime()))continue;
-    const mk=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
-    transactions.push({date:rawDate,monthKey:mk,desc:rawDesc,amount:Math.abs(amount),category:categorize(rawDesc),added:new Date().toISOString()});
+// ── MANUAL TRANSACTION ENTRY ──
+function toggleTxnForm(){
+  const form=document.getElementById('txn-form');
+  const toggle=document.getElementById('txn-form-toggle');
+  const open=form.style.display==='none';
+  form.style.display=open?'':'none';
+  toggle.textContent=open?'✕ Close':'+ New';
+  if(open){
+    const today=new Date();
+    document.getElementById('txn-date').value=today.toISOString().split('T')[0];
+    document.getElementById('txn-desc').value='';
+    document.getElementById('txn-amount').value='';
+    document.getElementById('cat-suggestion').textContent='';
+    document.getElementById('txn-category').value='Other';
+    document.getElementById('txn-desc').focus();
   }
-  if(transactions.length===0){alert('No valid transactions found.');return;}
-  // Detect potential duplicates: transactions that look like credit card payments
-  const debtNames=debts.map(d=>d.name.toLowerCase());
-  const loggedPayMonths=new Set(debtPayments.map(p=>p.month));
-  const dups=transactions.filter(t=>{
-    const d=t.desc.toLowerCase();
-    const isPayment=debtNames.some(n=>d.includes(n.split(' ')[0].toLowerCase()))||d.includes('payment')||d.includes('autopay')||d.includes('online payment')||d.includes('credit card');
-    return isPayment&&loggedPayMonths.has(t.monthKey);
-  });
-  if(dups.length>0){
-    pendingDuplicates=dups;
-    const banner=document.getElementById('dup-banner');
-    banner.style.display='';
-    document.getElementById('dup-list').innerHTML=dups.map(d=>`<div class="dup-item"><span class="dup-desc">${d.date} — ${d.desc}</span><span class="dup-amt">${fmt(d.amount)}</span></div>`).join('');
-  }else pendingDuplicates=[];
-  const byMonth={};
-  transactions.forEach(t=>{if(!byMonth[t.monthKey])byMonth[t.monthKey]=[];byMonth[t.monthKey].push(t);});
-  Object.entries(byMonth).forEach(([k,v])=>{spendingData[k]=[...(spendingData[k]||[]),...v];});
-  selectedMonth=Object.keys(spendingData).sort().reverse()[0];
-  document.getElementById('dropzone-label').innerHTML=`<strong>✓ Loaded ${transactions.length} transactions${dups.length>0?` — ${dups.length} possible duplicates flagged`:''}</strong>`;
-  renderSpending();
-  await appendSpending(transactions.map(t=>[t.date,t.monthKey,t.desc,t.amount,t.category,t.added]));
 }
 
-function removeDuplicates(){
-  pendingDuplicates.forEach(dup=>{
-    if(spendingData[dup.monthKey]){
-      const idx=spendingData[dup.monthKey].findIndex(t=>t.date===dup.date&&t.desc===dup.desc&&Math.abs(t.amount-dup.amount)<0.01);
-      if(idx>=0)spendingData[dup.monthKey].splice(idx,1);
-    }
-  });
-  pendingDuplicates=[];
-  document.getElementById('dup-banner').style.display='none';
-  renderSpending();
-  overwriteSpending();
+function suggestCategory(){
+  const desc=document.getElementById('txn-desc').value;
+  const cat=categorize(desc);
+  const sel=document.getElementById('txn-category');
+  const hint=document.getElementById('cat-suggestion');
+  if(cat!=='Other'||desc.trim()===''){
+    sel.value=cat;
+    hint.textContent=desc.trim()!==''?'auto-suggested':'';
+  }
 }
-function dismissDuplicates(){pendingDuplicates=[];document.getElementById('dup-banner').style.display='none';}
 
-function smartSplit(line){
-  const result=[];let cur='';let inQ=false;
-  for(const ch of line){if(ch==='"')inQ=!inQ;else if(ch===','&&!inQ){result.push(cur);cur='';}else cur+=ch;}
-  result.push(cur);return result;
+async function saveTransaction(){
+  const dateVal=document.getElementById('txn-date').value;
+  const desc=document.getElementById('txn-desc').value.trim();
+  const amount=parseFloat(document.getElementById('txn-amount').value);
+  const category=document.getElementById('txn-category').value;
+  if(!dateVal||!desc||isNaN(amount)||amount<=0){alert('Please fill in date, description, and amount.');return;}
+  const date=new Date(dateVal);
+  const mk=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+  const txn={date:dateVal,monthKey:mk,desc,amount,category,added:new Date().toISOString()};
+  if(!spendingData[mk])spendingData[mk]=[];
+  spendingData[mk].push(txn);
+  selectedMonth=mk;
+  // Reset form for next entry
+  document.getElementById('txn-desc').value='';
+  document.getElementById('txn-amount').value='';
+  document.getElementById('cat-suggestion').textContent='';
+  document.getElementById('txn-category').value='Other';
+  document.getElementById('txn-desc').focus();
+  renderSpending();
+  await appendSpending([[txn.date,txn.monthKey,txn.desc,txn.amount,txn.category,txn.added]]);
+}
+
+async function deleteTransaction(mk, idx){
+  if(!confirm('Remove this transaction?'))return;
+  spendingData[mk].splice(idx,1);
+  if(spendingData[mk].length===0)delete spendingData[mk];
+  renderSpending();
+  await overwriteSpending();
 }
 
 // Build spending view including debt payments as a category
@@ -1076,15 +1096,17 @@ function renderSpending(){
       <div class="compare-month-lbl">${label}</div><div class="compare-total">${fmt(t)}</div>
       ${delta!==null?`<div class="compare-delta ${delta>0?'delta-up':'delta-down'}">${delta>0?'↑':'↓'} ${fmt(Math.abs(delta))} vs prior</div>`:''}
     </div>`;}).join('');
-  // Transactions: show spending only (debt payments shown via log above)
-  const spendOnly=(spendingData[selectedMonth]||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
-  document.getElementById('txn-list').innerHTML=(spendOnly.length===0?'<div class="empty" style="padding:1.5rem"><p>No CSV transactions for this month yet.</p></div>':
-    spendOnly.slice(0,50).map(t=>`<div style="display:flex;align-items:center;gap:1rem;padding:0.7rem 0;border-bottom:1px solid var(--border);font-size:13px">
+  // Transactions
+  const spendOnly=(spendingData[selectedMonth]||[]).map((t,i)=>({...t,_idx:i})).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  document.getElementById('txn-list').innerHTML=(spendOnly.length===0
+    ?'<div class="empty" style="padding:1.5rem"><p>No transactions for this month yet. Hit "+ New" above to add one.</p></div>'
+    :spendOnly.slice(0,100).map(t=>`<div style="display:flex;align-items:center;gap:1rem;padding:0.7rem 0;border-bottom:1px solid var(--border);font-size:13px">
       <div style="font-size:11px;color:var(--text3);min-width:68px;font-variant-numeric:tabular-nums">${t.date}</div>
       <div style="flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.desc}</div>
       <div style="padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:${CAT_COLORS[t.category]||'#888'}22;color:${CAT_COLORS[t.category]||'#888'};white-space:nowrap">${t.category}</div>
       <div style="min-width:72px;text-align:right;font-variant-numeric:tabular-nums;font-weight:500">${fmt(t.amount)}</div>
-    </div>`).join(''))+(spendOnly.length>50?`<p style="font-size:12px;color:var(--text3);text-align:center;padding:0.75rem">Showing 50 of ${spendOnly.length} transactions</p>`:'');
+      <button class="btn btn-danger" style="padding:0.2rem 0.5rem;font-size:11px" onclick="deleteTransaction('${selectedMonth}',${t._idx})">✕</button>
+    </div>`).join(''))+(spendOnly.length>100?`<p style="font-size:12px;color:var(--text3);text-align:center;padding:0.75rem">Showing 100 of ${spendOnly.length} transactions</p>`:'');
   renderBudget();
 }
 
