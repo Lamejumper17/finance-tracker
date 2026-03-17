@@ -670,7 +670,7 @@ async function saveDebtPayments(){
 }
 async function appendSpending(rows){
   setSyncStatus('syncing','Saving...');
-  try{await sheetsReq('POST','/'+spreadsheetId+'/values/Spending!A1?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{values:rows});setSyncStatus('synced','Saved');}
+  try{await sheetsReq('POST','/'+spreadsheetId+'/values/Spending!A:F:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{values:rows});setSyncStatus('synced','Saved');}
   catch(e){setSyncStatus('error','Save failed');}
 }
 async function overwriteSpending(){
@@ -1276,3 +1276,4 @@ init();
 </script>
 </body>
 </html>
+
