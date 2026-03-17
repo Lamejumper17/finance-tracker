@@ -289,82 +289,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         </div>
       </div>
 
-      <!-- PAYOFF CALCULATOR -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
-        <h2 style="font-family:'DM Serif Display',serif;font-size:1.25rem;letter-spacing:-0.02em">Payoff Calculator</h2>
-        <span style="font-size:12px;color:var(--text3)">Avalanche method — highest rate paid first</span>
-      </div>
-
-      <div class="calc-grid">
-        <div class="calc-panel">
-          <div class="calc-panel-title">Payment Settings</div>
-
-          <div class="slider-group">
-            <div class="slider-top">
-              <span class="slider-lbl">Total monthly payment</span>
-              <span class="slider-val" id="v-monthly">$500</span>
-            </div>
-            <input type="range" id="r-monthly" min="100" max="3000" step="25" value="500" style="width:100%" oninput="calcUpdate()">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-top">
-              <span class="slider-lbl">Extra monthly (stacked on top)</span>
-              <span class="slider-val" id="v-extra">$0</span>
-            </div>
-            <input type="range" id="r-extra" min="0" max="1000" step="25" value="0" style="width:100%" oninput="calcUpdate()">
-          </div>
-
-          <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:0.25rem">
-            <div class="calc-panel-title" style="margin-bottom:0.5rem">One-Time Payments</div>
-            <p style="font-size:12px;color:var(--text2);margin-bottom:0.75rem">Apply a lump sum to a specific debt to see the impact.</p>
-            <div class="onetime-row">
-              <div class="form-group">
-                <label>Debt</label>
-                <select id="ot-select"></select>
-              </div>
-              <div class="form-group">
-                <label>Amount ($)</label>
-                <input type="number" id="ot-amount" placeholder="500" min="0" step="50">
-              </div>
-              <div class="form-group">
-                <label style="opacity:0">Go</label>
-                <button class="btn btn-primary" onclick="addOneTime()">Add</button>
-              </div>
-            </div>
-            <div id="ot-list"></div>
-          </div>
-        </div>
-
-        <div class="calc-panel">
-          <div class="calc-panel-title">Payoff Projection</div>
-          <div class="cr-grid">
-            <div class="cr-card">
-              <div class="cr-label">Payoff date</div>
-              <div class="cr-value" id="cr-date" style="font-size:1rem;padding-top:3px">--</div>
-            </div>
-            <div class="cr-card">
-              <div class="cr-label">Months left</div>
-              <div class="cr-value" id="cr-months">--</div>
-            </div>
-            <div class="cr-card">
-              <div class="cr-label">Total interest</div>
-              <div class="cr-value red" id="cr-interest">--</div>
-            </div>
-            <div class="cr-card">
-              <div class="cr-label">Total paid out</div>
-              <div class="cr-value" id="cr-total">--</div>
-            </div>
-          </div>
-          <div class="saving-box" id="saving-box" style="display:none"></div>
-          <div class="chart-wrap" style="height:175px;margin-bottom:0.75rem">
-            <canvas id="calc-chart"></canvas>
-          </div>
-          <div class="calc-note" id="calc-note"></div>
-        </div>
-      </div>
-
-      <!-- TIMELINE -->
+      <!-- TIMELINE + BALANCE -->
       <div class="two-col">
         <div class="card">
           <div class="card-title">Payoff Timeline</div>
@@ -528,6 +453,81 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     <div id="spending-empty" class="empty">
       <span class="empty-icon">📊</span>
       <p>Hit "+ New" above to add your first transaction.</p>
+    </div>
+
+    <!-- PAYOFF CALCULATOR -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Payoff Calculator</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div id="calc-section-bottom">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">Simulate different payment scenarios to see how fast you can get debt-free. Avalanche method — highest rate paid first.</p>
+      <div class="calc-grid">
+        <div class="calc-panel">
+          <div class="calc-panel-title">Payment Settings</div>
+          <div class="slider-group">
+            <div class="slider-top">
+              <span class="slider-lbl">Total monthly payment</span>
+              <span class="slider-val" id="v-monthly">$500</span>
+            </div>
+            <input type="range" id="r-monthly" min="100" max="3000" step="25" value="500" style="width:100%" oninput="calcUpdate()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-top">
+              <span class="slider-lbl">Extra monthly (stacked on top)</span>
+              <span class="slider-val" id="v-extra">$0</span>
+            </div>
+            <input type="range" id="r-extra" min="0" max="1000" step="25" value="0" style="width:100%" oninput="calcUpdate()">
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:0.25rem">
+            <div class="calc-panel-title" style="margin-bottom:0.5rem">One-Time Payments</div>
+            <p style="font-size:12px;color:var(--text2);margin-bottom:0.75rem">Apply a lump sum to a specific debt to see the impact.</p>
+            <div class="onetime-row">
+              <div class="form-group">
+                <label>Debt</label>
+                <select id="ot-select"></select>
+              </div>
+              <div class="form-group">
+                <label>Amount ($)</label>
+                <input type="number" id="ot-amount" placeholder="500" min="0" step="50">
+              </div>
+              <div class="form-group">
+                <label style="opacity:0">Go</label>
+                <button class="btn btn-primary" onclick="addOneTime()">Add</button>
+              </div>
+            </div>
+            <div id="ot-list"></div>
+          </div>
+        </div>
+        <div class="calc-panel">
+          <div class="calc-panel-title">Payoff Projection</div>
+          <div class="cr-grid">
+            <div class="cr-card">
+              <div class="cr-label">Payoff date</div>
+              <div class="cr-value" id="cr-date" style="font-size:1rem;padding-top:3px">--</div>
+            </div>
+            <div class="cr-card">
+              <div class="cr-label">Months left</div>
+              <div class="cr-value" id="cr-months">--</div>
+            </div>
+            <div class="cr-card">
+              <div class="cr-label">Total interest</div>
+              <div class="cr-value red" id="cr-interest">--</div>
+            </div>
+            <div class="cr-card">
+              <div class="cr-label">Total paid out</div>
+              <div class="cr-value" id="cr-total">--</div>
+            </div>
+          </div>
+          <div class="saving-box" id="saving-box" style="display:none"></div>
+          <div class="chart-wrap" style="height:175px;margin-bottom:0.75rem">
+            <canvas id="calc-chart"></canvas>
+          </div>
+          <div class="calc-note" id="calc-note"></div>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -1175,16 +1175,28 @@ function toggleBudgetEdit(){
   if(open){
     const saved=localStorage.getItem('ft_budget_limits');
     const limits=saved?JSON.parse(saved):{};
+    const lastMonth=getLastMonthSpendingByCategory();
     const cats=Object.keys(BUDGET_RATIOS);
     document.getElementById('budget-limit-inputs').innerHTML=cats.map(cat=>`
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
         <label style="min-width:130px;font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--text)">${cat}</label>
         <div style="display:flex;align-items:center;gap:4px">
           <span style="font-size:14px;color:var(--text2)">$</span>
-          <input type="number" class="budget-limit-input" data-cat="${cat}" value="${limits[cat]||''}" placeholder="0" min="0" step="10" style="width:100px">
+          <input type="number" class="budget-limit-input" data-cat="${cat}" value="${limits[cat]||lastMonth[cat]||''}" placeholder="${Math.round(lastMonth[cat]||0)||'0'}" min="0" step="10" style="width:100px">
         </div>
+        ${lastMonth[cat]?`<span style="font-size:11px;color:var(--text3)">spent ${fmt(lastMonth[cat])} last month</span>`:''}
       </div>`).join('');
   }
+}
+
+function getLastMonthSpendingByCategory(){
+  const months=Object.keys(spendingData).sort().reverse();
+  if(months.length===0)return{};
+  const lastMonth=months[0];
+  const txns=spendingData[lastMonth]||[];
+  const totals={};
+  txns.forEach(t=>{if(t.category!=='Debt Payments')totals[t.category]=(totals[t.category]||0)+t.amount;});
+  return totals;
 }
 
 function getAvgSpendingByCategory(){
@@ -1193,11 +1205,9 @@ function getAvgSpendingByCategory(){
   const totals={};
   allMonths.forEach(m=>{
     const txns=spendingData[m]||[];
-    const catTotals={};
-    txns.forEach(t=>{if(t.category!=='Debt Payments')catTotals[t.category]=(catTotals[t.category]||0)+t.amount;});
-    Object.entries(catTotals).forEach(([c,v])=>{totals[c]=(totals[c]||0)+v;});
+    txns.forEach(t=>{if(t.category!=='Debt Payments')totals[t.category]=(totals[t.category]||0)+t.amount;});
   });
-  const avg={};Object.keys(totals).forEach(c=>avg[c]=totals[c]/allMonths.length);
+  const avg={};Object.keys(totals).forEach(c=>avg[c]=Math.round(totals[c]/allMonths.length));
   return avg;
 }
 
@@ -1211,18 +1221,19 @@ function renderBudget(){
   budgetEmpty.style.display='none';budgetSection.style.display='';
 
   const minDebtPayments=debts.reduce((s,d)=>s+d.payment,0);
+  const lastMonthSpend=getLastMonthSpendingByCategory();
   const avgSpending=getAvgSpendingByCategory();
   const afterDebt=income-minDebtPayments;
 
-  // Build default budgets from spending history
+  // Default budgets = last month's actual spending (rounded up slightly as a target)
+  // Fall back to income % ratios if no spending data
   const catBudgetsDefault={};
-  const cats=Object.keys({...avgSpending,...BUDGET_RATIOS});
+  const cats=[...new Set([...Object.keys(lastMonthSpend),...Object.keys(BUDGET_RATIOS)])];
   cats.forEach(c=>{
     if(c==='Debt Payments')return;
+    const actual=lastMonthSpend[c]||0;
     const ratio=BUDGET_RATIOS[c]||0.03;
-    const suggested=income*ratio;
-    const actual=avgSpending[c]||0;
-    catBudgetsDefault[c]=Math.round(Math.min(actual*0.9,suggested*1.1)||suggested);
+    catBudgetsDefault[c]=actual>0?Math.round(actual):Math.round(income*ratio);
   });
   const catBudgets=loadBudgetLimits(catBudgetsDefault);
   const budgetedTotal=Object.values(catBudgets).reduce((s,v)=>s+v,0);
